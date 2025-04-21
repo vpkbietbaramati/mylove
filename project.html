@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Love Story Quiz 💖</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to top right, #FFB6C1, #FF69B4);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      color: #333;
+    }
+
+    .question-box {
+      margin-top: 30px;
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .question {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #FF3366;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #FF3366, #FF6699);
+      border: none;
+      padding: 12px 30px;
+      margin: 10px 0;
+      color: white;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .response {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #FF3366;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .final-message, .lost-message {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #FF3366;
+      margin-top: 30px;
+      text-align: center;
+      display: none;
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: #FF4D6D;
+      transform: rotate(45deg);
+      animation: float 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #FF4D6D;
+      border-radius: 50%;
+    }
+
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Animation for hearts floating around */
+    .floating-heart:nth-child(1) {
+      left: 10%;
+      animation-duration: 7s;
+    }
+
+    .floating-heart:nth-child(2) {
+      left: 30%;
+      animation-duration: 5s;
+    }
+
+    .floating-heart:nth-child(3) {
+      left: 50%;
+      animation-duration: 6s;
+    }
+
+    .floating-heart:nth-child(4) {
+      left: 70%;
+      animation-duration: 8s;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating Hearts -->
+  <div class="floating-heart"></div>
+  <div class="floating-heart"></div>
+  <div class="floating-heart"></div>
+  <div class="floating-heart"></div>
+
+  <div class="question-box">
+    <div class="question" id="question-text">When was our first date? 💘</div>
+    <button class="btn" onclick="answer('8jan', 1)">8th January</button>
+    <button class="btn" onclick="answer('11jan', 1)">11th January</button>
+    <button class="btn" onclick="answer('14jan', 1)">14th January</button>
+    <button class="btn" onclick="answer('2march', 1)">2nd March</button>
+    <div class="response" id="response"></div>
+    <div id="chances">Chances left: 2</div>
+  </div>
+
+  <div class="final-message" id="final-message">
+    💖 "My dear Pasindida Aurat, every moment with you is a dream come true, and every day I spend with you feels like the first day I fell in love with you. 💕 You make my world brighter, my heart fuller, and my life more beautiful. 💫 I’m so grateful for you, for us, and for every shared memory. You’ll always be my heart’s home. I love you more than words could ever say. Forever and always. 💖"
+  </div>
+
+  <div class="lost-message" id="lost-message">
+    💔 Oops! Looks like you missed a question. Don’t worry, we’ll get it right next time! 😘
+  </div>
+
+  <script>
+    let currentQuestion = 1;
+    let chances = 2;
+    let correctAnswers = {
+      1: '8jan',
+      2: '14jan',
+      3: '2march'
+    };
+
+    function answer(date, question) {
+      const response = document.getElementById('response');
+      const chancesLeft = document.getElementById('chances');
+      const lostMessage = document.getElementById('lost-message');
+      const finalMessage = document.getElementById('final-message');
+
+      if (date === correctAnswers[question]) {
+        response.innerHTML = "Correct! 💖";
+        nextQuestion();
+      } else {
+        chances--;
+        if (chances > 0) {
+          response.innerHTML = `Wrong! You have ${chances} chances left. Try again.`;
+        } else {
+          response.innerHTML = "Oops! You lost! 😢";
+          chancesLeft.style.display = "none";
+          document.querySelector(".question-box").style.display = "none";
+          finalMessage.style.display = 'none'; // Hide final message when the user loses
+          setTimeout(() => {
+            lostMessage.style.display = 'block'; // Show lost message after timeout
+          }, 1500);
+        }
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestion === 1) {
+        currentQuestion++;
+        document.getElementById('question-text').innerHTML = "When was our first hug? 💖";
+        updateOptions('14jan', '15jan', '16jan', '24jan');
+      } else if (currentQuestion === 2) {
+        currentQuestion++;
+        document.getElementById('question-text').innerHTML = "When did we say 'I love you'? 💘";
+        updateOptions('2march', '8march', '14march', '11march');
+      } else {
+        document.querySelector(".question-box").style.display = "none";
+        document.getElementById('final-message').style.display = 'block'; // Show final message after all questions answered correctly
+      }
+    }
+
+    function updateOptions(correct, option1, option2, option3) {
+      const buttons = document.querySelectorAll('.btn');
+      buttons[0].innerHTML = correct;
+      buttons[1].innerHTML = option1;
+      buttons[2].innerHTML = option2;
+      buttons[3].innerHTML = option3;
+    }
+  </script>
+</body>
+</html>
